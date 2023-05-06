@@ -40,7 +40,6 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
             body.put("error", "Forbidden");
             body.put("message", accessDeniedException.getMessage());
             body.put("path", request.getServletPath());
-            body.put("isAdmin", request.isUserInRole("USER"));
 
             final ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), body);

@@ -27,6 +27,7 @@ public class JwtUtils {
     @Value("${jwt.name}")
     private String jwtCookie;
 
+    //Ottenere il token JWT dal Cookie
     public String getJwtFromCookies(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);
         if (cookie != null) {
@@ -36,7 +37,7 @@ public class JwtUtils {
         }
     }
 
-    //ALTERNATIVO
+    //Ottenere il token JWT da Authorization Header
     public String getJwtFromToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if(token != null && token.startsWith("Bearer ")) {
@@ -47,12 +48,14 @@ public class JwtUtils {
         }
     }
 
+    // Generare Cookie dallo user
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
         return cookie;
     }
 
+    // Generare Token dallo user
     public String generateJwtToken(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         return jwt;
